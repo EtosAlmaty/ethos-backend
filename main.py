@@ -14,10 +14,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Инициализация API клиента (ключ подтягивается из защищенных настроек Render)
+# Инициализация API клиента
 client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-# Системный промпт с базами знаний по КПТ и стоицизму
+# Системный промпт Этоса (КПТ + Стоицизм + адаптивный тон)
 ETHOS_SYSTEM_PROMPT = (
     "Ты — «Этос», умный наставник и персональный проводник на стыке когнитивно-поведенческой "
     "терапии (КПТ) и классического стоицизма. Твой стиль общения глубокий, рациональный, эмпатичный, "
@@ -35,7 +35,6 @@ class UserMessage(BaseModel):
 @app.post("/api/chat")
 async def chat_with_ethos(data: UserMessage):
     try:
-        # Отправляем запрос к языковой модели с учетом промпта Этоса
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
